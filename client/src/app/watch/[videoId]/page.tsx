@@ -2,7 +2,6 @@
 
 function WatchVideoPage({params} : any) {
   const videoId = params.videoId;
-  console.log(videoId);
 
   return (
     <div>

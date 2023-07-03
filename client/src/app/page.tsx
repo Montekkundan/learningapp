@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { useMe } from "./context/me"
 import { Anchor, SimpleGrid } from "@mantine/core"
-import { logout } from './api';
+import { deleteUser, logout } from './api';
 import UploadVideo from "./components/UploadVideo";
 import { useVideo } from "./context/videos";
 import VideoTeaser from "./components/VideoTeaser";
@@ -20,6 +20,13 @@ export default function Home() {
     await logout();
     refetch();
   }
+  async function handleDeleteUser() {
+    // Call API to delete user and their videos
+    await deleteUser(user._id);
+    await logout();
+    refetch();
+    refetchVideos();
+  }
   
   const {user, refetch} = useMe()
   return (
@@ -29,7 +36,11 @@ export default function Home() {
       {user ? (
         <>
           <p>Welcome, {user.username}!</p>
+          <div className="space-x-5">
           <button onClick={handleLogout}>Logout</button>
+          <button className="bg-blue-500" onClick={handleDeleteUser}>Delete User and Videos</button>
+          </div>
+          
         </>
       ) : (
         <>

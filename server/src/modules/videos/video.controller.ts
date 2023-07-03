@@ -6,6 +6,7 @@ import { Video } from "./video.model";
 import { createVideo, deleteVideo, findVideo, findVideos } from "./video.service";
 import { UpdateVideoBody, UpdateVideoParams } from "./video.schema";
 import { VideoModel } from "./video.model";
+import logger from "../../utils/logger";
 
 
 const MIME_TYPES = ["video/mp4"];
@@ -172,7 +173,7 @@ export async function uploadVideoHandler(req: Request, res: Response) {
       fs.unlinkSync(filePath);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.error('Error during video file deletion:', error);
+        logger.error('Error during video file deletion:', error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error deleting video file");
       }
       // If error is ENOENT, file does not exist, but we can still delete video from DB
@@ -181,7 +182,7 @@ export async function uploadVideoHandler(req: Request, res: Response) {
     try {
       await VideoModel.deleteOne({ videoId });
     } catch (error) {
-      console.error('Error during video deletion from DB:', error);
+      logger.error('Error during video deletion from DB:', error);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error deleting video from database");
     }
     

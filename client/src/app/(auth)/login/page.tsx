@@ -1,5 +1,6 @@
 "use client"
 import { login } from "@/app/api";
+import { useMe } from "@/app/context/me";
 import { Button, Container, Paper, PasswordInput, Stack, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification, updateNotification } from "@mantine/notifications";
@@ -7,6 +8,8 @@ import { AxiosError } from "axios";
 import { useRouter } from 'next/navigation'
 import { useMutation } from "react-query";
 export default function Home() {
+
+  const {refetch} = useMe()
     const form = useForm({
         initialValues: {
           email: "",
@@ -22,8 +25,15 @@ export default function Home() {
     Parameters<typeof login>["0"]
   >(login, {
     onSuccess: () => {
-
+      refetch();
       router.push("/");
+    },
+    onError: () => {
+      updateNotification({
+        id: "register",
+        title: "Error",
+        message: "Cannot log in",
+      });
     },
   });
 
