@@ -16,3 +16,7 @@ export function findVideos() {
 export function deleteVideo(videoId: Video["videoId"]) {
   return VideoModel.deleteOne({ videoId });
 }
+
+export async function deleteVideosByUserId(userId: string) {
+  await VideoModel.deleteMany({ owner: userId });
+}

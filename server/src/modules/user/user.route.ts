@@ -1,5 +1,5 @@
 import express from "express";
-import {  findAllUsersHandler, registerUserHandler } from "./user.controller";
+import {  deleteUserHandler, findAllUsersHandler, registerUserHandler } from "./user.controller";
 import {processRequestBody} from "zod-express-middleware";
 import { registerUserSchema } from "./user.schema";
 import requireUser from "../../middleware/requireUser";
@@ -14,7 +14,7 @@ router.post("/",
 processRequestBody(registerUserSchema.body),
 registerUserHandler)
 
-// router.delete("/:userId", requireUser, deleteUserHandler);
+router.delete("/:userId", requireUser, deleteUserHandler);
 router.get("/all", requireUser, findAllUsersHandler);
 
 

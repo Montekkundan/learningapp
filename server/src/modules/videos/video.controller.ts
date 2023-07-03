@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { Video } from "./video.model";
 import { createVideo, deleteVideo, findVideo, findVideos } from "./video.service";
 import { UpdateVideoBody, UpdateVideoParams } from "./video.schema";
+import { VideoModel } from "./video.model";
 
 
 const MIME_TYPES = ["video/mp4"];
@@ -168,16 +169,22 @@ export async function uploadVideoHandler(req: Request, res: Response) {
     });
   
     try {
-      // Delete the file from the file system
       fs.unlinkSync(filePath);
-  
-      // Delete the video record from the database
-      await deleteVideo(video.videoId);
-  
-      return res.status(StatusCodes.OK).send({ message: 'Video deleted successfully' });
-    } catch (error) {
-      console.error('Error during video deletion:', error);
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error deleting video");
-
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error during video file deletion:', error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error deleting video file");
+      }
+      // If error is ENOENT, file does not exist, but we can still delete video from DB
     }
+    
+    try {
+      await VideoModel.deleteOne({ videoId });
+    } catch (error) {
+      console.error('Error during video deletion from DB:', error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error deleting video from database");
+    }
+    
+    return res.sendStatus(StatusCodes.NO_CONTENT);
+    
   }
