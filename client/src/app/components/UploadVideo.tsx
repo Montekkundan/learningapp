@@ -7,6 +7,7 @@ import {
     Stack,
     TextInput,
     Switch,
+    MultiSelect,
   } from "@mantine/core";
   import { Dispatch, SetStateAction, useState } from "react";
   import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
@@ -26,7 +27,8 @@ import {
     setOpened: Dispatch<SetStateAction<boolean>>;
   }) {
     const { refetch } = useVideo();
-
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const handleTagsChange = (tags: string[]) => setSelectedTags(tags);
     
     const published = true;
     const form = useForm({
@@ -34,6 +36,7 @@ import {
         title: "",
         description: "",
         published: published,
+        tags: []
       },
     });
   
@@ -49,13 +52,25 @@ import {
         },
       }
     );
+
+    const data = [
+      { value: 'react', label: 'React' },
+      { value: 'ng', label: 'Angular' },
+      { value: 'svelte', label: 'Svelte' },
+      { value: 'vue', label: 'Vue' },
+      { value: 'riot', label: 'Riot' },
+      { value: 'next', label: 'Next.js' },
+      { value: 'blitz', label: 'Blitz.js' },
+    ];
   
     return (
       <form
-        onSubmit={form.onSubmit((values: any) =>
-          mutation.mutate({ videoId, ...values })
-        )}
-      >
+      onSubmit={form.onSubmit((values: any) => {
+        const updatedValues = { ...values, tags: selectedTags };
+        mutation.mutate({ videoId, ...updatedValues });
+      })}
+      
+    >
         <Stack>
           <TextInput
             label="Title"
@@ -69,6 +84,15 @@ import {
             required
             {...form.getInputProps("description")}
           />
+
+            <MultiSelect
+              data={data}
+              label="Tags"
+              placeholder="Pick all that you like"
+              value={selectedTags}
+              onChange={handleTagsChange}
+            />
+
   
           <Switch label="Published" checked={published} {...form.getInputProps("published")} />
           <Button className="bg-blue-500" type="submit">Save</Button>

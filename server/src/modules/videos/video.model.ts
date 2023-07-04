@@ -28,6 +28,10 @@ export class Video {
 
   @prop({ default: false })
   public published: boolean;
+
+  @prop({ type: String, required: false, default: [], _id: false })
+  public tags: string[];
+  
 }
 
 export const VideoModel = getModelForClass(Video, {

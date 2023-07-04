@@ -9,6 +9,7 @@ export interface Video {
     extension: string;
     description: string;
     title: string;
+    tags: string[];
   }
 
   export interface Thumbnail {

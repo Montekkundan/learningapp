@@ -44,7 +44,6 @@ export async function uploadVideoHandler(req: Request, res: Response) {
       });
   
       video.extension = extension;
-  
       await video.save();
   
       const stream = fs.createWriteStream(filePath);
@@ -70,7 +69,7 @@ export async function uploadVideoHandler(req: Request, res: Response) {
     res: Response
   ) {
     const { videoId } = req.params;
-    const { title, description, published } = req.body;
+    const { title, description, published, tags  } = req.body;
   
     const { _id: userId } = res.locals.user;
   
@@ -87,6 +86,9 @@ export async function uploadVideoHandler(req: Request, res: Response) {
     video.title = title;
     video.description = description;
     video.published = published;
+    video.tags = [...tags];
+
+
   
     await video.save();
   

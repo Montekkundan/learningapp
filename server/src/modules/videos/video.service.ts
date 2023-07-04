@@ -20,3 +20,15 @@ export function deleteVideo(videoId: Video["videoId"]) {
 export async function deleteVideosByUserId(userId: string) {
   await VideoModel.deleteMany({ owner: userId });
 }
+export function findVideosByTag(tag: string) {
+  return VideoModel.find({
+    tags: { $in: [tag] },
+    published: true
+  }).lean();
+}
+export function findVideosByTags(tags: string[]) {
+  return VideoModel.find({
+    tags: { $in: tags },
+    published: true
+  }).lean();
+}

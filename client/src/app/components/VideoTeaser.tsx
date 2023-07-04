@@ -35,6 +35,13 @@ function VideoTeaser({ video }: { video: Video }) {
         </Text>
 
         <Text size="sm">{video.description}</Text>
+        
+        <div className="inline-flex flex-wrap">
+  {video.tags.map((tag, index) => (
+    <Text key={index} className="mr-2" size="sm">#{tag}</Text>
+  ))}
+</div>
+
      
     </Link>
 

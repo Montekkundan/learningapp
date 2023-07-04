@@ -13,9 +13,9 @@ import { useEffect } from "react";
 export default function Home() {
   const { videos, refetch: refetchVideos } = useVideo();
 
-  useEffect(() => {
-    refetchVideos();
-  }, []);
+  // useEffect(() => {
+  //   refetchVideos();
+  // }, []);
   async function handleLogout() {
     await logout();
     refetch();

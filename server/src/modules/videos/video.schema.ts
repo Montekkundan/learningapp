@@ -1,10 +1,11 @@
-import { boolean, object, string, TypeOf } from "zod";
+import { array, boolean, object, string, TypeOf } from "zod";
 
 export const updateVideoSchema = {
   body: object({
     title: string(),
     description: string(),
     published: boolean(),
+    tags: array(string()).nonempty("Tags array must not be empty"),
   }),
   params: object({
     videoId: string(),
