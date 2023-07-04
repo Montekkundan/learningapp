@@ -6,6 +6,7 @@ import { closeDatabaseConnection, connectToDatabase } from './utils/database';
 import { CORS_ORIGIN } from './constants';
 import helmet from 'helmet';
 import userRoute from './modules/user/user.route';
+import thumbnailRoute from './modules/thumbnails/thumbnail.route';
 import authRoute from './modules/auth/auth.route';
 import videoRoute from './modules/videos/video.route';
 import deserializeUser from './middleware/deserializeUser';
@@ -27,6 +28,9 @@ app.use(deserializeUser);
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/videos', videoRoute)
+app.use('/api/thumbnails', thumbnailRoute);
+
+
 
 const server = app.listen(PORT, async () => {
     await connectToDatabase();

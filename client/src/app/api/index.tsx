@@ -6,6 +6,7 @@ const base = process.env.NEXT_PUBLIC_API_ENDPOINT;
 const userBase = `${base}/api/users`;
 const authBase = `${base}/api/auth`;
 const videosBase = `${base}/api/videos`;
+const thumbnailsBase = `${base}/api/thumbnails`;
 
 export function registerUser(payload: {
     username: string;
@@ -120,4 +121,24 @@ export function registerUser(payload: {
           return null;
         });
   }
+  export function getThumbnails() {
+    return axios
+      .get(thumbnailsBase)
+      .then((res) => res.data)
+      .catch((error) => {
+        // handle error
+        console.error(error);
+        return null;
+      });
+  }
   
+  export function getThumbnail(videoId: string) {
+    return axios
+      .get(`${thumbnailsBase}/${videoId}`)
+      .then((res) => res.data)
+      .catch((error) => {
+        // handle error
+        console.error(error);
+        return null;
+      });
+  }

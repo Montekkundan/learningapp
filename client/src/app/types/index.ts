@@ -10,10 +10,21 @@ export interface Video {
     description: string;
     title: string;
   }
+
+  export interface Thumbnail {
+    _id: string;
+    url: string;
+    owner: string;
+    video: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+  
   
   export enum QueryKeys {
     me = "me",
     videos = "videos",
+    thumbnails = "thumbnails",
   }
   
   export interface Me {
