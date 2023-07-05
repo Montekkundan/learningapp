@@ -1,13 +1,14 @@
 "use client"
 import Link from "next/link"
 import { useMe } from "./context/me"
-import { Anchor, SimpleGrid } from "@mantine/core"
+import { Anchor, Button, Menu, SimpleGrid } from "@mantine/core"
 import { deleteUser, logout } from './api';
 import UploadVideo from "./components/UploadVideo";
 import { useVideo } from "./context/videos";
 import VideoTeaser from "./components/VideoTeaser";
 import styles from "./styles/Home.module.css";
-import { useEffect } from "react";
+import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSettings } from "@tabler/icons-react";
+
 
 
 export default function Home() {
@@ -35,11 +36,10 @@ export default function Home() {
         <div>
       {user ? (
         <>
-          <p>Welcome, {user.username}!</p>
-          <div className="space-x-5">
-          <button onClick={handleLogout}>Logout</button>
+          
+          
           <button className="bg-blue-500" onClick={handleDeleteUser}>Delete User and Videos</button>
-          </div>
+
           
         </>
       ) : (
@@ -57,7 +57,33 @@ export default function Home() {
         </>
       )}
       </div>
-      <div>{user && <UploadVideo />}</div>
+      <div>
+        {user && (
+          <div className="flex space-x-3">
+            <UploadVideo />
+            <Menu shadow="md" width={200} >
+      <Menu.Target>
+        <Button className="bg-blue-500">{user.username}</Button>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Application</Menu.Label>
+        <Menu.Item icon={<IconSettings size={14} />}>  
+        <Link href="/account">
+          Settings
+          </Link>
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Label>Danger zone</Menu.Label>
+        <Menu.Item  onClick={handleLogout} icon={<IconArrowsLeftRight size={14} />}>Logout</Menu.Item>
+ 
+      </Menu.Dropdown>
+    </Menu>
+          </div>
+        )}
+      </div>
       
       </div>
       <div className={styles.container}>

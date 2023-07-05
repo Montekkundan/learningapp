@@ -40,6 +40,7 @@ function VideoTeaser({ video }: { video: Video }) {
   {video.tags.map((tag, index) => (
     <Text key={index} className="mr-2" size="sm">#{tag}</Text>
   ))}
+  {/* <Text size="sm">By {video.owner}</Text> */}
 </div>
 
      
