@@ -1,8 +1,9 @@
-import { object, string, TypeOf } from "zod";
+import { object, string, TypeOf, union, literal } from "zod";
 
 export const createThumbnailSchema = {
   body: object({
-    videoId: string(),
+    parentId: string(),
+    parentType: union([literal('Video'), literal('BlogPost'), literal('File')]), // The parentType must be one of these values
     url: string(),
     ownerId: string()
   }),

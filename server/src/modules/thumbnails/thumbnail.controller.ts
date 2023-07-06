@@ -3,6 +3,8 @@ import { StatusCodes } from "http-status-codes";
 import { createThumbnail, deleteThumbnail, findAllThumbnails, findThumbnail } from "./thumbnail.service";
 import { CreateThumbnailBody } from "./thumbnail.schema";
 
+
+
 export async function uploadThumbnailHandler(req: Request<any, {}, CreateThumbnailBody>, res: Response) {
     console.log(req.body);
     try {

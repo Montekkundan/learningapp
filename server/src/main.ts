@@ -9,6 +9,8 @@ import userRoute from './modules/user/user.route';
 import thumbnailRoute from './modules/thumbnails/thumbnail.route';
 import authRoute from './modules/auth/auth.route';
 import videoRoute from './modules/videos/video.route';
+import postRoute from './modules/posts/post.route';
+import fileRoute from './modules/files/file.route';
 import deserializeUser from './middleware/deserializeUser';
 
 const PORT = process.env.PORT || 4000;
@@ -29,6 +31,8 @@ app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/videos', videoRoute)
 app.use('/api/thumbnails', thumbnailRoute);
+app.use('/api/posts', postRoute);
+app.use('/api/files', fileRoute);
 
 
 

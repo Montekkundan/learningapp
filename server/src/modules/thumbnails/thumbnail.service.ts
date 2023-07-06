@@ -3,16 +3,33 @@ import { ThumbnailModel } from "./thumbnail.model";
 import { VideoModel } from "../videos/video.model";
 import { UserModel } from "../user/user.model";
 import logger from "../../utils/logger";
+import { PostModel } from "../posts/post.model";
+import { FileModel } from "../files/file.model";
 
-export async function createThumbnail({ videoId, url, ownerId }: CreateThumbnailBody) {
+export async function createThumbnail({ parentId, parentType, url, ownerId }: CreateThumbnailBody) {
   const user = await UserModel.findById(ownerId);
-  const video = await VideoModel.findOne({ videoId });
+  let parent;
 
-  if (!user || !video) {
-    throw new Error("User or Video not found");
+  switch(parentType) {
+    case 'Video':
+      parent = await VideoModel.findOne({ videoId: parentId });
+
+      break;
+    case 'BlogPost':
+      parent = await PostModel.findById(parentId);
+      break;
+    case 'File':
+      parent = await FileModel.findById(parentId);
+      break;
+    default:
+      throw new Error("Invalid parentType provided");
   }
 
-  const thumbnail = new ThumbnailModel({ video: video._id, owner: user._id, url });
+  if (!user || !parent) {
+    throw new Error("User or parent not found");
+  }
+
+  const thumbnail = new ThumbnailModel({ parentId, parentType, ownerId: user._id, url });
   return thumbnail.save();
 }
 export async function findThumbnail(videoId: string) {
